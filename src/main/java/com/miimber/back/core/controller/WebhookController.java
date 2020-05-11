@@ -31,7 +31,7 @@ import com.stripe.net.Webhook;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WebhookController {
 
-	@Value("${stripe.apiKey}")
+	@Value("${stripe.apikey}")
 	private String apiKey;
 	
 	@Autowired
