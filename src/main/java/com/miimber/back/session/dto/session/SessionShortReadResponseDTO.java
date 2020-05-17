@@ -3,6 +3,7 @@ package com.miimber.back.session.dto.session;
 import java.time.OffsetDateTime;
 
 import com.miimber.back.session.model.Session;
+import com.miimber.back.session.model.TemplateSession;
 import com.miimber.back.session.model.TypeSession;
 
 import lombok.Getter;
@@ -23,14 +24,15 @@ public class SessionShortReadResponseDTO {
 	private int nbRegistereds;
 	
 	public SessionShortReadResponseDTO(Session session) {
+		TemplateSession templateSession = session.getTemplateSession();
 		this.id = session.getId();
-		this.title = session.getTitle();
-		this.description = session.getDescription();
-		this.start = session.getStart();
-		this.end = session.getEnd();
+		this.title = templateSession.getTitle();
+		this.description = templateSession.getDescription();
+		this.start = session.getStartDate();
+		this.end = session.getEndDate();
 		this.organizationId = session.getOrganization().getId();
-		this.typeSession = new TypeSessionDTO(session.getTypeSession());
-		this.setLimit(session.getLimit());
+		this.typeSession = new TypeSessionDTO(templateSession.getTypeSession());
+		this.setLimit(templateSession.getLimit());
 		if (session.getRegistereds() == null) {
 			this.setNbRegistereds(0);
 		} else {

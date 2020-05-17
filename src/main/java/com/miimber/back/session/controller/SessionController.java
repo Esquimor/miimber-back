@@ -2,6 +2,7 @@ package com.miimber.back.session.controller;
 
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,10 @@ import com.miimber.back.organization.model.Member;
 import com.miimber.back.organization.model.Organization;
 import com.miimber.back.organization.service.MemberService;
 import com.miimber.back.session.dto.session.SessionCreateRequestDTO;
+import com.miimber.back.session.dto.session.SessionCreateResponseDTO;
 import com.miimber.back.session.dto.session.SessionEditRequestDTO;
+import com.miimber.back.session.dto.session.SessionFromTemplateCreateRequestDTO;
+import com.miimber.back.session.dto.session.SessionPeriodDTO;
 import com.miimber.back.session.dto.session.SessionReadResponseDTO;
 import com.miimber.back.session.dto.session.SessionShortReadResponseDTO;
 import com.miimber.back.session.dto.session.SessionUsersReadResponseDTO;
@@ -33,6 +37,8 @@ import com.miimber.back.session.model.RegisteredSession;
 import com.miimber.back.session.model.Session;
 import com.miimber.back.session.model.TemplateSession;
 import com.miimber.back.session.model.TypeSession;
+import com.miimber.back.session.model.enums.TemplateSessionEnum;
+import com.miimber.back.session.model.enums.TemplateSessionStatusEnum;
 import com.miimber.back.session.service.RegisteredSessionService;
 import com.miimber.back.session.service.SessionService;
 import com.miimber.back.session.service.TemplateSessionService;
@@ -102,7 +108,7 @@ public class SessionController {
         
 		List<TemplateAttendeeDTO> users = new ArrayList<TemplateAttendeeDTO>();
 		
-		if (session.getLimit() == 0) {
+		if (session.getTemplateSession().getLimit() == 0) {
 			List<Member> members = session.getOrganization().getMembers();
 			
 	    	users.addAll(getAllMembers(members, attendees, registereds));
@@ -132,42 +138,59 @@ public class SessionController {
         if (typeSession == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        
-        TemplateSession templateSession = templateSessionService.create(new TemplateSession());
+
+		TemplateSession templateSession = new TemplateSession();
+		templateSession.setTitle(sessionDto.getTitle());
+		templateSession.setLimit(sessionDto.getLimit());
+		templateSession.setStartHour(sessionDto.getStartHour());
+		templateSession.setEndHour(sessionDto.getEndHour());
+		templateSession.setDescription(sessionDto.getDescription());
+		templateSession.setOrganization(memberUser.getOrganization());
+		templateSession.setTypeSession(typeSession);
+		templateSession.setStatus(TemplateSessionStatusEnum.GOING);
         
         List<Session> listSession = new ArrayList<Session>();
-        OffsetDateTime cursor =  sessionDto.getStartDate();
         switch (sessionDto.getPeriodicity()) {
         	case ONCE: {
-                listSession.add(sessionService.create(
-                		createSessionBySessionDtoAndDate(sessionDto, sessionDto.getStart(), typeSession, memberUser.getOrganization(), templateSession)
-                		));
-        		break;
-        	}
-        	case EVERYDAY: {
-                OffsetDateTime endDate = sessionDto.getEndDate().plusDays(2);
-                cursor = cursor.plusDays(1);
-        		while(cursor.isBefore(endDate)) {
-                    listSession.add(sessionService.create(
-                    		createSessionBySessionDtoAndDate(sessionDto, cursor, typeSession, memberUser.getOrganization(), templateSession)
-                    		));
-                    cursor = cursor.plusDays(1);
+        		templateSession.setRecurrency(TemplateSessionEnum.ONCE);
+        		templateSession = templateSessionService.create(templateSession);
+        		if (templateSession == null) {
+        			return new ResponseEntity(HttpStatus.CONFLICT);
         		}
+        		
+        		Session session = new Session();
+        		session.setSessionDate(sessionDto.getSessionDate());
+        		session.setTemplateSession(templateSession);
+        		session.setOrganization(memberUser.getOrganization());
+        		
+                listSession.add(sessionService.create(session));
         		break;
         	}
         	case BY_WEEK: {
-                OffsetDateTime endDate = sessionDto.getEndDate().plusDays(2);
-                cursor = cursor.plusDays(1);
-        		while(cursor.isBefore(endDate)) {
-        			if (sessionDto.getDays().contains(cursor.getDayOfWeek().getValue())) {
-                        listSession.add(sessionService.create(
-                        		createSessionBySessionDtoAndDate(sessionDto, cursor, typeSession, memberUser.getOrganization(), templateSession)
-                        		));
+        		templateSession.setRecurrency(TemplateSessionEnum.MULTIPLE);
+        		templateSession.setDay(sessionDto.getDay());
+        		templateSession = templateSessionService.create(templateSession);
+        		if (templateSession == null) {
+        			return new ResponseEntity(HttpStatus.CONFLICT);
+        		}
+        		
+        		for(SessionPeriodDTO sessionPeriod: sessionDto.getPeriods()) {
+        			if (!sessionPeriod.isPeriodValid()) continue;
+        			LocalDate cursor = sessionPeriod.getStart();
+        			LocalDate end = sessionPeriod.getEnd().plusDays(2);
+        			while(cursor.isBefore(end)) {
+
+            			if (sessionDto.getDay().equals(cursor.getDayOfWeek().getValue())) {
+
+                    		Session session = new Session();
+                    		session.setSessionDate(cursor);
+                    		session.setTemplateSession(templateSession);
+                    		session.setOrganization(memberUser.getOrganization());
+
+                            listSession.add(sessionService.create(session));
+            			}
+        				cursor = cursor.plusDays(1);
         			}
-        			if (cursor.getDayOfWeek() == DayOfWeek.SUNDAY) {
-        				cursor = cursor.plusWeeks(sessionDto.getRepeat() - 1);
-        			}
-                    cursor = cursor.plusDays(1);
         		}
         		break;
         	}
@@ -176,6 +199,48 @@ public class SessionController {
         	}
         }
 
+		return ResponseEntity.ok(new SessionCreateResponseDTO(listSessionToListSessionDto(listSession), templateSession));
+	}
+	
+	@RequestMapping(value = "/session/fromTemplate", method = RequestMethod.POST)
+	public ResponseEntity<?> createSessionFromTemplate(@RequestBody SessionFromTemplateCreateRequestDTO sessionFromTemplateDto) throws Exception {
+
+        User user = helper.getUserToken((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        
+        Member memberUser = memberService.getMemberByOrganizationIdAndByUser(sessionFromTemplateDto.getOrganizationId(), user);
+        if (memberUser == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if (!memberUser.canEditOrganization()) {
+        	return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        
+        TemplateSession templateSession = templateSessionService.get(sessionFromTemplateDto.getTemplateId());
+        if (templateSession == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        
+        List<Session> listSession = new ArrayList<Session>();
+		
+		for(SessionPeriodDTO sessionPeriod: sessionFromTemplateDto.getPeriods()) {
+			if (!sessionPeriod.isPeriodValid()) continue;
+			LocalDate cursor = sessionPeriod.getStart();
+			LocalDate end = sessionPeriod.getEnd().plusDays(2);
+			while(cursor.isBefore(end)) {
+
+    			if (templateSession.getDay().equals(cursor.getDayOfWeek().getValue())) {
+
+            		Session session = new Session();
+            		session.setSessionDate(cursor);
+            		session.setTemplateSession(templateSession);
+            		session.setOrganization(memberUser.getOrganization());
+
+                    listSession.add(sessionService.create(session));
+    			}
+				cursor = cursor.plusDays(1);
+			}
+		}
+		
 		return ResponseEntity.ok(listSessionToListSessionDto(listSession));
 	}
 	
@@ -202,15 +267,34 @@ public class SessionController {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         
-        int oldLimit = session.getLimit();
+        TemplateSession templateSession = session.getTemplateSession();
+        
+        
+        if (templateSession.getRecurrency() == TemplateSessionEnum.MULTIPLE) {
+        	TemplateSession newTemplateSession = new TemplateSession();
+        	newTemplateSession.setTitle(sessionDto.getTitle());
+        	newTemplateSession.setDescription(sessionDto.getDescription());
+        	newTemplateSession.setLimit(sessionDto.getLimit());
+        	newTemplateSession.setStartHour(sessionDto.getStart());
+        	newTemplateSession.setEndHour(sessionDto.getEnd());
+        	newTemplateSession.setRecurrency(TemplateSessionEnum.ONCE);
+        	newTemplateSession.setTypeSession(typeSession);
+        	templateSession = templateSessionService.create(newTemplateSession);
+        } else {
+        	templateSession.setTitle(sessionDto.getTitle());
+        	templateSession.setDescription(sessionDto.getDescription());
+        	templateSession.setLimit(sessionDto.getLimit());
+        	templateSession.setStartHour(sessionDto.getStart());
+        	templateSession.setEndHour(sessionDto.getEnd());
+        	templateSession.setTypeSession(typeSession);
+        	templateSession = templateSessionService.update(templateSession);
+        }
+
+        int oldLimit = templateSession.getLimit();
         int newLimit = sessionDto.getLimit();
         
-        session.setTitle(sessionDto.getTitle());
-        session.setDescription(sessionDto.getDescription());
-        session.setStart(sessionDto.getStart());
-        session.setEnd(sessionDto.getEnd());
-        session.setTypeSession(typeSession);
-        session.setLimit(sessionDto.getLimit());
+        session.setSessionDate(sessionDto.getSessionDate());
+        session.setTemplateSession(templateSession);
         
         
         // Add taken registered
@@ -280,24 +364,6 @@ public class SessionController {
 			listSessionDto.add(new SessionShortReadResponseDTO(session));
 		}
 		return listSessionDto;
-	}
-	
-	
-	private Session createSessionBySessionDtoAndDate(SessionCreateRequestDTO sessionDto, OffsetDateTime date, TypeSession typeSession, Organization organization, TemplateSession templateSession) {
-		Session session = new Session();
-        session.setTitle(sessionDto.getTitle());
-        session.setDescription(sessionDto.getDescription());
-        session.setStart(mixDateAndTime(date, sessionDto.getStart()));
-        session.setEnd(mixDateAndTime(date, sessionDto.getEnd()));
-        session.setTypeSession(typeSession);
-        session.setOrganization(organization);
-        session.setLimit(sessionDto.getLimit());
-        session.setTemplateSession(templateSession);
-        return session;
-	}
-	
-	private OffsetDateTime mixDateAndTime(OffsetDateTime date, OffsetDateTime time) {
-		return OffsetDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), time.getOffset());
 	}
 	
 	private SessionReadResponseDTO SessionAndMemberToSessionReadDTO(Session session, Member member, Long userId) {

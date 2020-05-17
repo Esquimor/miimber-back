@@ -1,6 +1,8 @@
 package com.miimber.back.session.model;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -27,20 +29,8 @@ public class Session {
 	@Column(name = "id")
 	private long id; 
 	
-	@Column(name = "title", length = 255, nullable = false)
-	private String title;
-	
-	@Column(name = "description", columnDefinition="TEXT", length = 5000, nullable = false)
-	private String description;
-	
-	@Column(name = "startDate", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
-	private OffsetDateTime start;
-	
-	@Column(name = "endDate", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
-	private OffsetDateTime end;
-	
-	@Column(name = "limitUsers", nullable = false)
-	private int limit;
+	@Column(name = "sessionDate", columnDefinition = "DATE", nullable = false)
+	private LocalDate sessionDate;
 	
 	@OneToMany(mappedBy = "session")
     private List<AttendeeSession> attendees;
@@ -57,8 +47,15 @@ public class Session {
     @ManyToOne
     private TemplateSession templateSession;
     
-    @ManyToOne
-    private TypeSession typeSession;
+    public OffsetDateTime getStartDate() {
+    	OffsetTime start = this.templateSession.getStartHour();
+    	return OffsetDateTime.of(this.sessionDate, start.toLocalTime(), start.getOffset());
+    }
+    
+    public OffsetDateTime getEndDate() {
+    	OffsetTime end = this.templateSession.getEndHour();
+    	return OffsetDateTime.of(this.sessionDate, end.toLocalTime(), end.getOffset());
+    }
 	
 	public void addAttendee(AttendeeSession attendee) {
 		this.attendees.add(attendee);

@@ -63,9 +63,9 @@ public class RegisteredSessionController {
     	registered = registeredService.create(registered);
     	
 		RegisteredEnum status = RegisteredEnum.TAKEN;
-		if (session.getLimit() != 0) {
+		if (session.getTemplateSession().getLimit() != 0) {
 	    	long nbRegistered = registeredService.countRegisteredBySession(session);
-			status = session.getLimit() >= nbRegistered ? RegisteredEnum.TAKEN : RegisteredEnum.WAITING;
+			status = session.getTemplateSession().getLimit() >= nbRegistered ? RegisteredEnum.TAKEN : RegisteredEnum.WAITING;
 		}
     	
     	boolean isMember = memberService.getMemberByOrganizationAndByUser(session.getOrganization(), user) != null;
@@ -88,9 +88,9 @@ public class RegisteredSessionController {
         }
         
         Session session = registered.getSession();
-        if (session.getLimit() != 0) {
+        if (session.getTemplateSession().getLimit() != 0) {
         	long placeRegistered = registeredService.countRegisteredBySessionAndBefore(session, registered.getDateRegistered());
-        	if (placeRegistered <= session.getLimit()) {
+        	if (placeRegistered <= session.getTemplateSession().getLimit()) {
         		RegisteredSession registeredTaken = registeredService.getNextRegistered(session, registered.getDateRegistered());
         		if (registeredTaken != null) {
         			User userTaken = registeredTaken.getUser();

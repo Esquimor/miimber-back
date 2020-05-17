@@ -1,5 +1,6 @@
 package com.miimber.back.session.service;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +20,13 @@ public class SessionService implements ISessionService {
 	private SessionRepository sessionRepository;
 	
 	@Override
-	public List<Session> getSessionByOrganizationId(long id, OffsetDateTime min, OffsetDateTime max) {
-		return sessionRepository.findByOrganizationIdAndStartBetween(id, min, max);
+	public List<Session> getSessionByOrganizationId(long id, LocalDate min, LocalDate max) {
+		return sessionRepository.findByOrganizationIdAndSessionDateBetween(id, min, max);
 	}
 
 	@Override
-	public List<Session> getSessionByUserAndDate(User user, OffsetDateTime min, OffsetDateTime max) {
-		return sessionRepository.findByOrganizationMembersUserAndStartBetweenAndOrganizationState(user, min, max, StateOrganizationEnum.ACTIVE);
+	public List<Session> getSessionByUserAndDate(User user, LocalDate min, LocalDate max) {
+		return sessionRepository.findByOrganizationMembersUserAndSessionDateBetweenAndOrganizationState(user, min, max, StateOrganizationEnum.ACTIVE);
 	}
 
 	@Override

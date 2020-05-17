@@ -1,5 +1,6 @@
 package com.miimber.back.session.repository;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import com.miimber.back.user.model.User;
 
 public interface SessionRepository extends CrudRepository<Session, Long>  {
 
-	List<Session> findByOrganizationIdAndStartBetween(long id, OffsetDateTime min, OffsetDateTime max);
+	List<Session> findByOrganizationIdAndSessionDateBetween(long id, LocalDate min, LocalDate max);
 	
-	List<Session> findByOrganizationMembersUserAndStartBetweenAndOrganizationState(User user, OffsetDateTime min, OffsetDateTime max, StateOrganizationEnum state);
+	List<Session> findByOrganizationMembersUserAndSessionDateBetweenAndOrganizationState(User user, LocalDate min, LocalDate max, StateOrganizationEnum state);
 }

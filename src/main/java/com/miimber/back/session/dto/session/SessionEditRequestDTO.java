@@ -1,6 +1,7 @@
 package com.miimber.back.session.dto.session;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.OffsetTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,11 +16,15 @@ public class SessionEditRequestDTO {
 	@NotNull
 	private String description;
 	@NotNull
-	private OffsetDateTime start;
-	@NotNull
-	private OffsetDateTime end;
-	@NotNull
 	private long typeSessionId;
 	@NotNull
 	private int limit;
+
+	@NotNull
+	private OffsetTime start;
+	@NotNull
+	private OffsetTime end;
+
+	@NotNull
+	private LocalDate sessionDate;
 }

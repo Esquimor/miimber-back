@@ -1,6 +1,7 @@
 package com.miimber.back.session.dto.session;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.OffsetTime;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -18,23 +19,20 @@ public class SessionCreateRequestDTO {
 	@NotNull
 	private String description;
 	@NotNull
-	private OffsetDateTime start;
-	@NotNull
-	private OffsetDateTime end;
-	@NotNull
-	private OffsetDateTime startDate;
-	@NotNull
-	private OffsetDateTime endDate;
-	@NotNull
 	private PeriodicityEnum periodicity;
 	@NotNull
-	private List<Integer> days;
-	@NotNull
-	private int repeat;
+	private Integer day;
 	@NotNull
 	private long typeSessionId;
 	@NotNull
 	private long organizationId;
 	@NotNull
 	private int limit;
+	
+	private LocalDate sessionDate;
+	
+	private OffsetTime startHour;
+	private OffsetTime endHour;
+	
+	private List<SessionPeriodDTO> periods;
 }

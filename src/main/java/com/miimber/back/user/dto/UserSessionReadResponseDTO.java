@@ -1,8 +1,11 @@
 package com.miimber.back.user.dto;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 
 import com.miimber.back.session.model.Session;
+import com.miimber.back.session.model.TemplateSession;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,13 +23,14 @@ public class UserSessionReadResponseDTO {
 	private int nbRegistereds;
 	
 	public UserSessionReadResponseDTO(Session session) {
+		TemplateSession templateSession = session.getTemplateSession();
 		this.setId(session.getId());
-		this.setTitle(session.getTitle());
-		this.setStart(session.getStart());
-		this.setEnd(session.getEnd());
-		this.setTypeSessionName(session.getTypeSession().getName());
+		this.setTitle(templateSession.getTitle());
+		this.setTypeSessionName(templateSession.getTypeSession().getName());
 		this.setOrganizationName(session.getOrganization().getName());
-		this.setLimit(session.getLimit());
+		this.setLimit(templateSession.getLimit());
 		this.setNbRegistereds(session.getRegistereds().size());
+		this.start = session.getStartDate();
+		this.end = session.getEndDate();
 	}
 }

@@ -154,8 +154,8 @@ public class OrganizationController {
         User user = helper.getUserToken(currentUser);
         
         Customer customer = stripeService.createCustomer(organizationDto.getTokenId(), user.getEmail());
-        
         Subscription subscription = stripeService.createSubscription(customer, organizationDto.getSubscription(), 1L);
+        
         Timestamp stripeEnd = new Timestamp(subscription.getCurrentPeriodEnd() * 1000 + 3600 * 24 * 3);
         
         Organization newOrganization = new Organization(organizationDto.getName());
