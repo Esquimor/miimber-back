@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import com.miimber.back.forum.model.CategoryForum;
 import com.miimber.back.organization.model.enums.StateOrganizationEnum;
 import com.miimber.back.session.model.Session;
+import com.miimber.back.session.model.TemplateSession;
 import com.miimber.back.session.model.TypeSession;
 
 import lombok.Getter;
@@ -51,6 +52,9 @@ public class Organization {
 	
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE)
     private List<Session> sessions;
+	
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE)
+    private List<TemplateSession> templateSessions;
 	
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE)
     private List<CategoryForum> categoriesForum;

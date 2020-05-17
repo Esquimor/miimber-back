@@ -1,5 +1,6 @@
 package com.miimber.back.organization.controller.organization;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class OrganizationSessionController {
 	public ResponseEntity<?> readOrganizationSession(@PathVariable Long id, @RequestParam String minDate, @RequestParam String maxDate) throws Exception {
         List<SessionShortReadResponseDTO> listSessions = new ArrayList<SessionShortReadResponseDTO>();
         
-        for (Session session: sessionService.getSessionByOrganizationId(id, OffsetDateTime.parse(minDate), OffsetDateTime.parse(maxDate))) {
+        for (Session session: sessionService.getSessionByOrganizationId(id, LocalDate.parse(minDate), LocalDate.parse(maxDate))) {
         	listSessions.add(new SessionShortReadResponseDTO(session));
         }
         return ResponseEntity.ok(listSessions);

@@ -5,6 +5,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\forum\model\TalkForum.jav
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\repository\SessionRepository.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\controller\UserOrganizationController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\controller\CategoryForumController.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\TemplateSessionController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\controller\AuthController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\service\IMemberService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\AttendeeSessionController.java
@@ -27,12 +28,15 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\forum\dto\subject\Subject
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\enums\StripeStatusEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\AttendeeSession.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\dto\organization\OrganizationAndMemberReadResponseDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\templateSession\TemplateSessionTemplateCreateReadResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\service\TypeSessionService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\comment\CommentSessionCreateUpdateResponseDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\session\SessionPeriodDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\typeSession\TypeSessionNameUpdateRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\service\TemplateService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\controller\AuthTestController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\RegisteredConverter.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\TemplateSessionStatusConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\service\TemplateSessionService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\enumItem\DayConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\service\ITemplateSessionService.java
@@ -50,6 +54,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\session\enumItem\Periodic
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\model\SubjectForum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\model\User.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\member\MemberMeController.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\session\SessionFromTemplateCreateRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\organization\OrganizationSessionController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\dto\member\MemberUpdateRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\dto\UserLangUpdateRequest.java
@@ -77,6 +82,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\session\enumItem\Periodic
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\service\ISubjectForumService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\repository\MemberRepository.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\config\JwtAuthenticationEntryPoint.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\templateSession\TemplateSessionCreateRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\CommentSessionController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\registered\RegisteredSessionDeleteResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\service\MemberService.java
@@ -102,9 +108,11 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\forum\repository\TalkForu
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\member\MemberController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\registered\RegisteredSessionCreateRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\TypeSessionController.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\TemplateSessionConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\dto\UserRegisterDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\dto\InvitationValidatedDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\comment\CommentSessionUpdateRequestDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\TemplateSessionStatusEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\session\SessionUsersReadResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\model\Member.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\dto\RegisterValidatedDTO.java
@@ -134,6 +142,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\organization\dto\organiza
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\enumItem\RepeatConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\enums\LangConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\model\enums\StateOrganizationEnum.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\session\SessionCreateResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\dto\talk\TalkForumCreateResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\model\enums\RoleConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\dto\subject\SubjectForumCreateRequestDTO.java
@@ -144,6 +153,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\user\service\UserService.
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\dto\message\MessageForumCreateResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\enumItem\DayEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\dto\ResetPasswordDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\TemplateSessionEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\repository\AttendeeSessionRepository.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\controller\SubjectForumController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\repository\RegisteredSessionRepository.java

@@ -1,5 +1,6 @@
 package com.miimber.back.user.controller;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class UserSessionController {
         User user = helper.getUserToken((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         
         List<UserSessionReadResponseDTO> sessions = new ArrayList<UserSessionReadResponseDTO>();
-        for (Session session : sessionService.getSessionByUserAndDate(user, OffsetDateTime.parse(minDate), OffsetDateTime.parse(maxDate)))
+        for (Session session : sessionService.getSessionByUserAndDate(user, LocalDate.parse(minDate), LocalDate.parse(maxDate)))
         {
         	sessions.add(SessionToUserSessionDTO(session));
         }

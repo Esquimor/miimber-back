@@ -48,8 +48,6 @@ public class MailJetService {
     	                    .put(Emailv31.Message.TEMPLATELANGUAGE, true)
     	                    .put(Emailv31.Message.TEMPLATEID, template)));
         response = client.post(request);
-		System.out.println(response.getStatus());
-		System.out.println(response.getData());
         return response;
     }
     
@@ -172,12 +170,12 @@ public class MailJetService {
     		case FR:
     			idTemplate = 1390934;
     			subject = "Participation confirmé";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "de", "à");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "de", "à");
     			break;
     		default:
     			idTemplate = 1390928;
     			subject = "Participation confirmed";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "to", "at");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "to", "at");
     			break;
     	}
     	
@@ -188,7 +186,7 @@ public class MailJetService {
     			name,
     			subject,
     			new JSONObject()
-				.put("session", session.getTitle())
+				.put("session", session.getTemplateSession().getTitle())
 				.put("id", session.getId())
 				.put("organization", session.getOrganization().getName())
 				.put("date", date),
@@ -205,12 +203,12 @@ public class MailJetService {
     		case FR:
     			idTemplate = 1391122;
     			subject = "Participation mise en attente";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "de", "à");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "de", "à");
     			break;
     		default:
     			idTemplate = 1391123;
     			subject = "Participation put on hold";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "to", "at");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "to", "at");
     			break;
     	}
     	
@@ -221,7 +219,7 @@ public class MailJetService {
     			name,
     			subject,
     			new JSONObject()
-				.put("session", session.getTitle())
+				.put("session", session.getTemplateSession().getTitle())
 				.put("id", session.getId())
 				.put("organization", session.getOrganization().getName())
 				.put("date", date),
@@ -238,12 +236,12 @@ public class MailJetService {
     		case FR:
     			idTemplate = 1391198;
     			subject = "Participation annulé";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "de", "à");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "de", "à");
     			break;
     		default:
     			idTemplate = 1391194;
     			subject = "Participation canceled";
-    			date = getDate(session.getStart(), session.getEnd(), lang, "to", "at");
+    			date = getDate(session.getStartDate(), session.getEndDate(), lang, "to", "at");
     			break;
     	}
     	
@@ -254,7 +252,7 @@ public class MailJetService {
     			name,
     			subject,
     			new JSONObject()
-				.put("session", session.getTitle())
+				.put("session", session.getTemplateSession().getTitle())
 				.put("organization", session.getOrganization().getName())
 				.put("date", date),
     			idTemplate

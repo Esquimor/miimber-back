@@ -15,7 +15,7 @@ create table users (
 create table organizations (
   id bigserial Not null Primary key,
   name Varchar(100) not null,
-  stripe Varchar(50) not null,
+  stripe Varchar(50),
   stripe_end timestamp without time zone,
   state Varchar(2)
 );
@@ -27,26 +27,31 @@ create table members (
   user_id bigint REFERENCES users (id)
 );
 
-create table template_sessions (
-  id bigserial not null Primary key
-);
-
 create table type_sessions (
   id bigserial not null Primary key,
   name Varchar(100) not null,
   organization_id bigint REFERENCES organizations (id)
 );
 
+create table template_sessions (
+  id bigserial not null Primary key,
+  title Varchar(255) not null,
+  description text,
+  limit_users int not null,
+  start_hour time with time zone not null,
+  end_hour time with time zone not null,
+  day int,
+  status varchar(2),
+  recurrency varchar(2),
+  organization_id bigint REFERENCES organizations (id),
+  type_session_id bigint REFERENCES type_sessions (id)
+);
+
 create table sessions (
   id bigserial not null primary key,
-  description text,
-  end_date timestamp with time zone not null,
-  limit_users int not null,
-  start_date timestamp with time zone not null,
-  title Varchar(255) not null,
+  session_date date,
   organization_id bigint REFERENCES organizations (id),
-  template_session_id bigint REFERENCES template_sessions (id),
-  type_session_id bigint REFERENCES type_sessions (id)
+  template_session_id bigint REFERENCES template_sessions (id)
 );
 
 create table comments (

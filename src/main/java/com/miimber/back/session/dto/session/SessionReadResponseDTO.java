@@ -1,6 +1,8 @@
 package com.miimber.back.session.dto.session;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +13,7 @@ import com.miimber.back.organization.model.enums.RoleEnum;
 import com.miimber.back.session.model.CommentSession;
 import com.miimber.back.session.model.RegisteredSession;
 import com.miimber.back.session.model.Session;
+import com.miimber.back.session.model.TemplateSession;
 import com.miimber.back.session.model.TypeSession;
 import com.miimber.back.session.model.enums.RegisteredEnum;
 import com.miimber.back.user.model.User;
@@ -26,6 +29,7 @@ public class SessionReadResponseDTO {
 	private String description;
 	private OffsetDateTime start;
 	private OffsetDateTime end;
+	private LocalDate sessionDate;
 	private OrganizationDTO organization;
 	private TypeSessionDTO typeSession;
 	private MeDTO me;
@@ -34,14 +38,15 @@ public class SessionReadResponseDTO {
 	private List<CommentDTO> comments;
 	
 	public SessionReadResponseDTO(Session session, Member member, Long userId) {
+		TemplateSession templateSession = session.getTemplateSession();
 		this.setId(session.getId());
-		this.setTitle(session.getTitle());
-		this.setDescription(session.getDescription());
-		this.setStart(session.getStart());
-		this.setEnd(session.getEnd());
-		this.setLimit(session.getLimit());
+		this.setTitle(templateSession.getTitle());
+		this.setDescription(templateSession.getDescription());
+		this.start = session.getStartDate();
+		this.end = session.getEndDate();
+		this.setLimit(templateSession.getLimit());
 		this.setOrganization(new OrganizationDTO(session.getOrganization()));
-		this.setTypeSession(new TypeSessionDTO(session.getTypeSession()));
+		this.setTypeSession(new TypeSessionDTO(templateSession.getTypeSession()));
 		this.setMe(new MeDTO(member, getByUserId(session, userId)));
 		if ( member != null && (member.getRole() == RoleEnum.INSTRUCTOR ||
 			member.getRole() == RoleEnum.OFFICE_INSTRUCTOR ||
@@ -70,7 +75,7 @@ public class SessionReadResponseDTO {
 		List<Member> members = session.getOrganization().getMembers();
 		List<RegisteredSession> registereds = session.getRegistereds();
 		Collections.sort(registereds);
-		int limitSession = session.getLimit();
+		int limitSession = session.getTemplateSession().getLimit();
 		for(int i = 0; i < registereds.size(); i++) {
 			boolean isMember = false;
 			for(Member member: members) {
