@@ -66,7 +66,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-			"no-reply@test280407.ga", 
+			"no-reply@miimber.com", 
 			"Miimber", 
 			email, 
 			name, 
@@ -93,7 +93,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-			"no-reply@test280407.ga", 
+    			"no-reply@miimber.com", 
 			"Miimber", 
 			email, 
 			name, 
@@ -120,7 +120,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-			"no-reply@test280407.ga", 
+    			"no-reply@miimber.com", 
 			"Miimber", 
 			email, 
 			name, 
@@ -149,7 +149,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-    			"no-reply@test280407.ga",
+    			"no-reply@miimber.com", 
     			"Miimber",
     			email,
     			name,
@@ -180,7 +180,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-    			"no-reply@test280407.ga",
+    			"no-reply@miimber.com", 
     			"Miimber",
     			email,
     			name,
@@ -246,7 +246,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-    			"no-reply@test280407.ga",
+    			"no-reply@miimber.com", 
     			"Miimber",
     			email,
     			name,
@@ -275,7 +275,7 @@ public class MailJetService {
     	}
     	
     	return this.sendEmail(
-    			"no-reply@test280407.ga",
+    			"no-reply@miimber.com", 
     			"Miimber",
     			email,
     			name,
