@@ -8,6 +8,7 @@ com\miimber\back\organization\controller\member\MemberUserController.class
 com\miimber\back\organization\service\IMemberService.class
 com\miimber\back\session\dto\session\SessionCreateResponseDTO.class
 com\miimber\back\session\enumItem\PeriodicityConverter.class
+com\miimber\back\organization\controller\organization\OrganizationStatisticController.class
 com\miimber\back\session\model\CommentSession.class
 com\miimber\back\core\service\TemplateService.class
 com\miimber\back\session\controller\SessionController$1.class
@@ -23,6 +24,7 @@ com\miimber\back\session\dto\registered\RegisteredSessionCreateResponseDTO.class
 com\miimber\back\organization\model\Organization.class
 com\miimber\back\session\dto\session\SessionReadResponseDTO$RegisteredDTO$UserRegisteredDTO.class
 com\miimber\back\organization\dto\member\MemberCreateResponseDTO.class
+com\miimber\back\organization\dto\organization\OrganizationStatisticRequestDTO.class
 com\miimber\back\session\service\ITypeSessionService.class
 com\miimber\back\forum\dto\message\MessageForumCreateRequestDTO.class
 com\miimber\back\session\controller\SessionController.class
@@ -38,6 +40,7 @@ com\miimber\back\session\dto\comment\CommentSessionUpdateRequestDTO.class
 com\miimber\back\core\enums\LangEnum.class
 com\miimber\back\core\dto\JwtRequestDTO.class
 com\miimber\back\forum\dto\message\MessageForumCreateResponseDTO.class
+com\miimber\back\session\repository\custom\StatQuery.class
 com\miimber\back\forum\service\ICategoryForumService.class
 com\miimber\back\organization\dto\organization\OrganizationCreateReadUpdateResponseDTO.class
 com\miimber\back\session\dto\session\SessionReadResponseDTO$MeDTO$MemberUserDTO.class

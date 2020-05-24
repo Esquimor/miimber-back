@@ -107,6 +107,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\BackApplication.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\repository\TalkForumRepository.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\member\MemberController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\registered\RegisteredSessionCreateRequestDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\organization\dto\organization\OrganizationStatisticRequestDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\TypeSessionController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\TemplateSessionConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\dto\UserRegisterDTO.java
@@ -119,6 +120,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\core\dto\RegisterValidate
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\controller\RegisteredSessionController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\model\enums\RegisteredEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\model\MessageForum.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\organization\OrganizationStatisticController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\attendee\AttendeeSessionCreateResponseDTO.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\enums\LangEnum.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\forum\dto\category\CategoryForumCreateUpdateResponseDTO.java
@@ -129,6 +131,7 @@ D:\Project\miimber-back\src\main\java\com\miimber\back\core\enums\StripeStatusCo
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\model\enums\StatusConverter.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\organization\controller\organization\OrganizationTestController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\dto\session\SessionCreateRequestDTO.java
+D:\Project\miimber-back\src\main\java\com\miimber\back\session\repository\custom\StatQuery.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\user\controller\UserController.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\session\service\RegisteredSessionService.java
 D:\Project\miimber-back\src\main\java\com\miimber\back\core\config\WebSecurityConfig.java
